@@ -36,20 +36,19 @@
 ---
 
 ### Explicacion del codigo
+
+---
+
 ## LoginForm
 
 ### Función principal
 El **LoginForm** es la pantalla de inicio de sesión del sistema.  
 Su objetivo es validar las credenciales del usuario contra la base de datos y controlar los intentos fallidos de acceso.
 
----
-
 ### Datos que procesa
 - **Usuario**: ingresado en un `JTextField`.
 - **Contraseña**: ingresada en un `JPasswordField`.
 - **Intentos fallidos**: contador interno que bloquea el acceso tras 3 errores consecutivos.
-
----
 
 ### Conexión con la lógica del sistema
 - Se conecta a la base de datos mediante la clase `DBConnection`.
@@ -64,15 +63,11 @@ Su objetivo es validar las credenciales del usuario contra la base de datos y co
 El **BancoForm** es la ventana principal de operaciones bancarias del sistema.  
 Permite al cliente autenticado visualizar su saldo y realizar transacciones como depósitos, retiros y transferencias.
 
----
-
 ### Datos que procesa
 - **Saldo del cliente**: valor numérico que se actualiza tras cada operación.
 - **Monto ingresado**: cantidad introducida por el usuario en los campos de texto.
 - **Destinatario de transferencia**: nombre del cliente receptor en caso de transferencias.
 - **Historial de transacciones**: registro textual mostrado en un `JTextArea`.
-
----
 
 ### Conexión con la lógica del sistema
 - Recibe un objeto `Cliente` desde el **LoginForm** tras la autenticación.
@@ -81,8 +76,6 @@ Permite al cliente autenticado visualizar su saldo y realizar transacciones como
   - Se actualiza el `JLabel` que muestra el saldo.
   - Se añade un registro descriptivo al historial (`JTextArea`).
 - El botón **Salir** cierra la aplicación.
-
----
 
 ### Flujo funcional
 1. El cliente inicia sesión y se abre el **BancoForm** con sus datos.
@@ -94,15 +87,11 @@ Permite al cliente autenticado visualizar su saldo y realizar transacciones como
 4. Cada operación se refleja en el historial de transacciones.
 5. El saldo se actualiza en tiempo real en la interfaz.
 
----
-
 ### Buenas prácticas
 - Validar que el monto ingresado sea numérico y positivo.
 - Evitar retiros o transferencias si el saldo es insuficiente.
 - Mostrar mensajes claros al usuario en cada operación.
 - Mantener el historial visible para transparencia de las transacciones.
-
----
 
 ### Pruebas recomendadas
 - Realizar un depósito y comprobar que el saldo aumenta correctamente.
@@ -112,27 +101,21 @@ Permite al cliente autenticado visualizar su saldo y realizar transacciones como
 - Probar el botón **Salir** y confirmar que la aplicación se cierra.
 ---
 
-## 🗄️ DBConnection (Configuración)
+## DBConnection (Configuración)
 
 ### Función principal
 La clase **DBConnection** centraliza la conexión a la base de datos del sistema.  
 Su objetivo es proveer un único punto de acceso para ejecutar consultas SQL, evitando repetir credenciales y configuraciones en cada formulario.
-
----
 
 ### Datos que procesa
 - **URL de conexión**: dirección JDBC hacia la base de datos (ejemplo: `jdbc:mysql://localhost:3306/banco`).
 - **Usuario y contraseña de la BD**: credenciales para autenticar la conexión.
 - **Objeto `Connection`**: instancia reutilizable que permite ejecutar consultas y transacciones.
 
----
-
 ### Conexión con la lógica del sistema
 - Es invocada en el **LoginForm** para validar credenciales de usuario.
 - Puede ser utilizada en el **BancoForm** si se decide persistir las operaciones (depósitos, retiros, transferencias) en la base de datos.
 - Garantiza que toda la aplicación use un único punto de acceso a la base de datos, facilitando el mantenimiento y la seguridad.
-
----
 
 ### Ejemplo de implementación
 ```java
@@ -151,7 +134,7 @@ public class ConexionDB {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
-
+````
 
 ---
 ## Cliente (Modelo)
@@ -160,22 +143,16 @@ public class ConexionDB {
 La clase **Cliente** representa al usuario autenticado dentro del sistema bancario.  
 Es el modelo que encapsula los datos básicos del cliente y su saldo, permitiendo que las operaciones bancarias se realicen sobre este objeto.
 
----
-
 ### Datos que procesa
 - **Usuario**: identificador único del cliente en el sistema.
 - **Nombre**: nombre completo del cliente.
 - **Saldo**: valor numérico que refleja el dinero disponible en la cuenta.
-
----
 
 ### Conexión con la lógica del sistema
 - El objeto `Cliente` se crea en el **LoginForm** después de validar las credenciales contra la base de datos.
 - Este objeto se pasa como parámetro al **BancoForm**, donde se realizan las operaciones bancarias.
 - Cada transacción (depósito, retiro, transferencia) modifica el atributo `saldo` del objeto `Cliente`.
 - El saldo actualizado se refleja en la interfaz gráfica y en el historial de transacciones.
-
----
 
 ### Ejemplo de implementación
 ```java
@@ -198,9 +175,41 @@ public class Cliente {
 
     public void setSaldo(double saldo) { this.saldo = saldo; }
 }
-
+````
 ---
 
+## Main (Punto de entrada)
+
+### Función principal
+La clase **Main** es el punto de inicio de la aplicación.  
+Su objetivo es inicializar la interfaz gráfica y mostrar el formulario de **Login** al usuario.
+
+### Datos que procesa
+- No procesa datos directamente, solo **inicializa la aplicación**.
+- Crea la primera ventana (`LoginForm`) que gestiona las credenciales del usuario.
+
+### Conexión con la lógica del sistema
+- Llama al formulario **LoginForm**.
+- Una vez que el usuario se autentica, el flujo pasa al **BancoForm**.
+- No contiene lógica de negocio ni conexión a la base de datos; únicamente arranca la aplicación.
+
+### Ejemplo de implementación
+```java
+package src;
+
+import forms.Login;
+
+public class Main {
+    public static void main(String[] args) {
+        // Inicializa la aplicación mostrando el formulario de login
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login().setVisible(true);
+        });
+    }
+}
+````
+
+---
 ## Base de Datos
 
 ### Script SQL (MySQL)
@@ -222,3 +231,4 @@ VALUES
 ('jdoe', '1234', 'John Doe', 1000.00, TRUE),
 ('maria', 'abcd', 'Maria Lopez', 1500.00, TRUE),
 ('carlos', 'pass', 'Carlos Perez', 500.00, FALSE);
+````
