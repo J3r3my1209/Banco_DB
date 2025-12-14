@@ -1,4 +1,4 @@
-# Simulador Bancario en Java Swing
+<img width="829" height="454" alt="image" src="https://github.com/user-attachments/assets/8ae676fa-c8db-45f6-b53c-800c4ce60efe" /># Simulador Bancario en Java Swing
 
 ## Funcionalidades
 - Inicio de sesión con validación en base de datos.
@@ -25,17 +25,18 @@
 ## Ejecución
 1. Configurar base de datos MySQL.
 2. Ejecutar `Main.java`.
+   <img width="829" height="454" alt="image" src="https://github.com/user-attachments/assets/2d905dba-21d5-4e4c-a3ee-1e6bbc603056" />
 3. Ingresar credenciales válidas.
+   
 
 ### 3. Extras de Diseño
 - Uso de `GroupLayout` o `GridBagLayout` para una interfaz clara.
-- Íconos y colores en botones.
 - Estilo profesional: fuentes legibles, espacios adecuados y centrado visual.
 
 
 ---
 
-## 🗄️ Base de Datos
+## Base de Datos
 
 ### Script SQL (MySQL)
 ```sql
